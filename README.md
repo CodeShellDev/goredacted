@@ -30,6 +30,12 @@ This mode is the simplest way to run Goredacted and is mainly used for bash scri
 echo "private@sensitive.domain.com" | goredacted parse
 ```
 
+**Output:**
+
+````bash
+john@test.example.org
+```
+
 The `parse` subcommand uses `stdin` to receive and parse the data and outputs into `stdout` the result.
 
 ### Clipboard Hook
@@ -38,7 +44,7 @@ In the **Clipboard Hook** mode Goredacted runs in a loop where it gets the clipb
 
 ```bash
 goredacted start
-```
+````
 
 ### HTTP Listener
 
