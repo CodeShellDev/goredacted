@@ -32,7 +32,7 @@ echo "private@sensitive.domain.com" | goredacted parse
 
 **Output:**
 
-````bash
+```bash
 john@test.example.org
 ```
 
@@ -44,7 +44,7 @@ In the **Clipboard Hook** mode Goredacted runs in a loop where it gets the clipb
 
 ```bash
 goredacted start
-````
+```
 
 ### HTTP Listener
 
