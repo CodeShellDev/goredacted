@@ -6,6 +6,7 @@ Go CLI programm to redact and anonymize sensitive information.
 
 > [!WARNING]
 > The binaries haven't been tested with **Windows** and **MacOS** only **Linux** (ubuntu) has been tested.
+> Either `xclip` or `xsel` have to be installed when using **Linux**.
 
 1. Download the latest version of Goredacted from the Release Page
 2. Make it executable with `chmod +x goredacted`
