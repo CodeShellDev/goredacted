@@ -4,6 +4,9 @@ Go CLI programm to redact and anonymize sensitive information.
 
 ## Getting Started
 
+> [!WARNING]
+> The binaries haven't been tested with **Windows** and **MacOS** only **Linux** (ubuntu) has been tested.
+
 1. Download the latest version of Goredacted from the Release Page
 2. Make it executable with `chmod +x goredacted`
 3. Move to $PATH: `mv goredacted /usr/local/bin/goredacted`
@@ -59,12 +62,12 @@ goredacted start -l 127.0.0.1:5678
 
 ### Flags
 
-| Flag | Example                                    | Note                                                                                            |
-| :--- | :----------------------------------------- | :---------------------------------------------------------------------------------------------- |
-| `-d` | `goredacted start -d`                      | Run in background, <br> use `stop` to terminate <br> (only available for `start`)               |
-| `-l` | `goredacted start -l 127.0.0.1:5678`       | Specify listen address for http server <br> (only available for `start`)                        |
-| `-s` | `goredacted parse -s /path/to/seed.file`   | Seed file path <br> (default: `/home/user/.config/grdct/tcdrg.grdct`)                           |
-| `-c` | `goredacted parse -s /path/to/config.json` | Config json path <br> (default: `/home/user/.config/grdct/config.json`, [Config](#config-file)) |
+| Flag | Example                                    | Note                                                                                   |
+| :--- | :----------------------------------------- | :------------------------------------------------------------------------------------- |
+| `-d` | `goredacted start -d`                      | Run in background, <br> use `stop` to terminate <br> (only available for `start`)      |
+| `-l` | `goredacted start -l 127.0.0.1:5678`       | Specify listen address for http server <br> (only available for `start`)               |
+| `-s` | `goredacted parse -s /path/to/seed.file`   | Seed file path <br> (default: `~/.config/grdct/tcdrg.grdct`)                           |
+| `-c` | `goredacted parse -s /path/to/config.json` | Config json path <br> (default: `~/.config/grdct/config.json`, [Config](#config-file)) |
 
 ### Parsers
 
@@ -125,3 +128,7 @@ Load the newly downloaded `integration/chrome-extension` in your chromium based 
 
 Here you can **add disabled and enabled domains** and also the **http endpoint** that the extension should request.
 Once done any domain that ends with a disabled or enabled will be treated respectively.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
