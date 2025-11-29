@@ -16,7 +16,7 @@ goredacted init
 
 > [!IMPORTANT]
 > Each time `goredacted init` is run it creates and overwrites the seed file.
-> Since the seed is used for consisten data masking using `init` multiple times can lead to inconsistent placeholders.
+> Since the seed is used for consistent data masking using `init` multiple times can lead to inconsistent placeholders.
 
 ## Usage
 
