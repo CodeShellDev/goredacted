@@ -59,12 +59,12 @@ goredacted start -l 127.0.0.1:5678
 
 ### Flags
 
-| Flag | Example (`goredacted`...) | Note                                                                                                                                      |
-| :--- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| `-d` | `start -d`                | Detach and spawn a background service; Only available for the `start` subcommand                                                          |
-| `-l` | `start -l 127.0.0.1:5678` | Specify listen address for http server; Only available for the `start` subcommand                                                         |
-| `-s` | `parse -s /seed.file`     | Path of seed file to be used for data masking, needed to provide consistent masking (default: `/home/user/.config/grdct/tcdrg.grdct`)     |
-| `-c` | `parse -s /config.json`   | Path of config json file for configuring exludes and includes (default: `/home/user/.config/grdct/config.json`; [see more](#config-file)) |
+| Flag | Example                                    | Note                                                                                       |
+| :--- | :----------------------------------------- | :----------------------------------------------------------------------------------------- |
+| `-d` | `goredacted start -d`                      | Run in background, use `stop` to terminate (only available for `start`)                    |
+| `-l` | `goredacted start -l 127.0.0.1:5678`       | Specify listen address for http server (only available for `start`)                        |
+| `-s` | `goredacted parse -s /path/to/seed.file`   | Seed file path (default: `/home/user/.config/grdct/tcdrg.grdct`)                           |
+| `-c` | `goredacted parse -s /path/to/config.json` | Config json path (default: `/home/user/.config/grdct/config.json`, [Config](#config-file)) |
 
 ### Parsers
 
