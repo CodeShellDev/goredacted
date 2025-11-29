@@ -30,7 +30,6 @@ func Spawn(flags ...string) error {
 
 	cmd.Env = append(os.Environ(), "DAEMON_MODE=1")
 
-	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true}
 	cmd.Stdin = nil
 	cmd.Stdout = nil
 	cmd.Stderr = nil
