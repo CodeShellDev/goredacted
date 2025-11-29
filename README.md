@@ -63,7 +63,7 @@ goredacted start -l 127.0.0.1:5678
 | :--- | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
 | `-d` | `goredacted start -d`                      | Detach and spawn a background service; Only available for the `start` subcommand                                                          |
 | `-l` | `goredacted start -l 127.0.0.1:5678`       | Specify listen address for http server; Only available for the `start` subcommand                                                         |
-| `-s` | `goredacted parse -s /path/to/seed.file`   | Path of seed file to be used for data masking, needed to provide consistent masking (default: `/home/user/.config/grdct/tcdrq.grdct`)     |
+| `-s` | `goredacted parse -s /path/to/seed.file`   | Path of seed file to be used for data masking, needed to provide consistent masking (default: `/home/user/.config/grdct/tcdrg.grdct`)     |
 | `-c` | `goredacted parse -s /path/to/config.json` | Path of config json file for configuring exludes and includes (default: `/home/user/.config/grdct/config.json`; [see more](#config-file)) |
 
 ### Parsers
