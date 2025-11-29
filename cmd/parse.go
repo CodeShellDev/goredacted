@@ -1,0 +1,51 @@
+package cmd
+
+import (
+	"github.com/codeshelldev/goredacted/internals/config"
+	"github.com/codeshelldev/goredacted/internals/defaults"
+	"github.com/codeshelldev/goredacted/internals/env"
+	"github.com/codeshelldev/goredacted/internals/seed"
+	service "github.com/codeshelldev/goredacted/internals/service"
+	"github.com/codeshelldev/goredacted/utils/fsutils"
+	"github.com/spf13/cobra"
+)
+
+var parseCmd = &cobra.Command{
+	Use:   "parse",
+    Short: "Parse and redact stdin",
+	Args: parse_validate,
+    Long:  `Parse and redact using standard input`,
+	Run: parse_run,
+}
+
+func init() {
+	Register(parseCmd)
+
+	parseCmd.Flags().StringVarP(&env.ENV.SEED_PATH, "seed", "s", defaults.DEFAULTS.SEED_PATH, "path of seed file")
+	parseCmd.Flags().StringVarP(&env.ENV.CONFIG_PATH, "config", "c", defaults.DEFAULTS.CONFIG_PATH, "path of config file")
+}
+
+func parse_validate(cmd *cobra.Command, args []string) error {
+	return nil
+}
+
+func parse_run(cmd *cobra.Command, args []string) {
+	if !fsutils.Exists(env.ENV.SEED_PATH) {
+		cmd.PrintErrln(env.ENV.SEED_PATH, "not found")
+		return
+	}
+
+	seed.LoadFile(env.ENV.SEED_PATH)
+	err := config.Load(env.ENV.CONFIG_PATH)
+
+	if err != nil {
+		cmd.PrintErrln(err)
+	}
+
+	err = service.Redact()
+
+	if err != nil {
+		cmd.PrintErrln("error parsing stdin:", err.Error())
+		return
+	}
+}

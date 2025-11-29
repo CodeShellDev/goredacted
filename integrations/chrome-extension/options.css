@@ -1,0 +1,155 @@
+/* -------------------- Body & Container -------------------- */
+body {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #f9f9f9;
+	color: #333;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	max-width: 550px;
+	margin: 50px auto;
+	padding: 30px;
+	background-color: #fff;
+	border-radius: 12px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* -------------------- Headings -------------------- */
+h1 {
+	text-align: center;
+	margin-bottom: 30px;
+	font-size: 26px;
+	color: #2c3e50;
+}
+
+h2 {
+	color: #34495e;
+	margin-bottom: 15px;
+	font-size: 20px;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 5px;
+}
+
+/* -------------------- Sections -------------------- */
+.section {
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+}
+
+/* -------------------- Input Groups -------------------- */
+.input-group {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.input-group label {
+	font-weight: bold;
+	color: #555;
+	font-size: 16px;
+	min-width: 120px;
+}
+
+input[type="text"] {
+	flex: 1;
+	padding: 10px 15px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus {
+	border-color: #3498db;
+	outline: none;
+	box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+/* -------------------- Buttons -------------------- */
+button {
+	padding: 10px 20px;
+	font-size: 15px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+button#add-enabled,
+button#add-disabled,
+button#save-general {
+	background-color: #3498db;
+	color: white;
+}
+
+button#add-enabled:hover,
+button#add-disabled:hover,
+button#save-general:hover {
+	background-color: #2980b9;
+}
+
+/* -------------------- Domain Lists -------------------- */
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#enabled-domain-list li,
+#disabled-domain-list li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 14px;
+	margin-bottom: 8px;
+	border-radius: 6px;
+	position: relative;
+	transition: background-color 0.2s;
+	font-size: 15px;
+}
+
+#enabled-domain-list li {
+	background-color: #e0f7e0;
+}
+
+#enabled-domain-list li:hover {
+	background-color: #c8efc8;
+}
+
+#disabled-domain-list li {
+	background-color: #fce4e4;
+}
+
+#disabled-domain-list li:hover {
+	background-color: #f8c8c8;
+}
+
+/* -------------------- Delete Buttons -------------------- */
+.delete-btn {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0;
+	pointer-events: none;
+	background-color: #e74c3c;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 4px 8px;
+	font-size: 12px;
+	transition: opacity 0.2s, background-color 0.2s;
+}
+
+#enabled-domain-list li:hover .delete-btn,
+#disabled-domain-list li:hover .delete-btn {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.delete-btn:hover {
+	background-color: #c0392b;
+}
