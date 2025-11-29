@@ -59,12 +59,12 @@ goredacted start -l 127.0.0.1:5678
 
 ### Flags
 
-| Flag | Example                                    | Note                                                                                       |
-| :--- | :----------------------------------------- | :----------------------------------------------------------------------------------------- |
-| `-d` | `goredacted start -d`                      | Run in background, use `stop` to terminate (only available for `start`)                    |
-| `-l` | `goredacted start -l 127.0.0.1:5678`       | Specify listen address for http server (only available for `start`)                        |
-| `-s` | `goredacted parse -s /path/to/seed.file`   | Seed file path (default: `/home/user/.config/grdct/tcdrg.grdct`)                           |
-| `-c` | `goredacted parse -s /path/to/config.json` | Config json path (default: `/home/user/.config/grdct/config.json`, [Config](#config-file)) |
+| Flag | Example                                    | Note                                                                                            |
+| :--- | :----------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| `-d` | `goredacted start -d`                      | Run in background, <br> use `stop` to terminate (only available for `start`)                    |
+| `-l` | `goredacted start -l 127.0.0.1:5678`       | Specify listen address for http server (only available for `start`)                             |
+| `-s` | `goredacted parse -s /path/to/seed.file`   | Seed file path <br> (default: `/home/user/.config/grdct/tcdrg.grdct`)                           |
+| `-c` | `goredacted parse -s /path/to/config.json` | Config json path <br> (default: `/home/user/.config/grdct/config.json`, [Config](#config-file)) |
 
 ### Parsers
 
