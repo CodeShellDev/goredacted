@@ -8,11 +8,15 @@ Go CLI programm to redact and anonymize sensitive information.
 2. Make it executable with `chmod +x goredacted`
 3. Move to $PATH: `mv goredacted /usr/local/bin/goredacted`
 
-Once done initiliaze `goredacted` with
+Once done initiliaze `goredacted` with (use `-s` for custom seed path)
 
 ```bash
 goredacted init
 ```
+
+> [!IMPORTANT]
+> Each time `goredacted init` is run it creates and overwrites the seed file.
+> Since the seed is used for consisten data masking using `init` multiple times can lead to inconsistent placeholders.
 
 ## Usage
 
