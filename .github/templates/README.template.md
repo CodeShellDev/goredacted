@@ -7,7 +7,7 @@ Go CLI programm to redact and anonymize sensitive information.
 > [!WARNING]
 > The binaries haven't been tested with **Windows** and **MacOS** only **Linux** (ubuntu) has been tested.
 
-1. Download the latest version of Goredacted from the Release Page
+1. Download the latest version of Goredacted from the Releases page
 2. Make it executable with `chmod +x goredacted`
 3. Move to $PATH: `mv goredacted /usr/local/bin/goredacted`
 
