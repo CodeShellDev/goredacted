@@ -56,7 +56,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 				return { ok: false, skipped: true }
 			}
 
-			// Check the local service before sending clipboard content.
 			await checkHealth(settings)
 
 			const endpoint = String(settings.endpoint || "").trim()
