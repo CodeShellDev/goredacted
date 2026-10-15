@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"strings"
+
 	"github.com/codeshelldev/goredacted/internals/config"
 	"github.com/codeshelldev/goredacted/internals/defaults"
 	"github.com/codeshelldev/goredacted/internals/env"
@@ -21,8 +23,11 @@ var parseCmd = &cobra.Command{
 func init() {
 	Register(parseCmd)
 
-	parseCmd.Flags().StringVarP(&env.ENV.SEED_PATH, "seed", "s", defaults.DEFAULTS.SEED_PATH, "path of seed file")
+	parseCmd.Flags().StringVarP(&env.ENV.SEED_PATH, "seedfile", "f", defaults.DEFAULTS.SEED_PATH, "path of seed file")
+	parseCmd.Flags().StringVarP(&env.ENV.SEED, "seed", "s", "", "seed")
 	parseCmd.Flags().StringVarP(&env.ENV.CONFIG_PATH, "config", "c", defaults.DEFAULTS.CONFIG_PATH, "path of config file")
+
+	parseCmd.MarkFlagsMutuallyExclusive("seed", "seedfile")
 }
 
 func parse_validate(cmd *cobra.Command, args []string) error {
@@ -30,12 +35,17 @@ func parse_validate(cmd *cobra.Command, args []string) error {
 }
 
 func parse_run(cmd *cobra.Command, args []string) {
-	if !fsutils.Exists(env.ENV.SEED_PATH) {
-		cmd.PrintErrln(env.ENV.SEED_PATH, "not found")
-		return
+	if strings.TrimSpace(env.ENV.SEED) != "" {
+		seed.Load(env.ENV.SEED)
+	} else {
+		if !fsutils.Exists(env.ENV.SEED_PATH) {
+			cmd.PrintErrln(env.ENV.SEED_PATH, "not found")
+			return
+		}
+
+		seed.LoadFile(env.ENV.SEED_PATH)
 	}
 
-	seed.LoadFile(env.ENV.SEED_PATH)
 	err := config.Load(env.ENV.CONFIG_PATH)
 
 	if err != nil {
