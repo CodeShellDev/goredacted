@@ -68,7 +68,6 @@ async function init() {
 		setPageStatus("Could not determine page status", false)
 	}
 
-	// Run health check independently so page-status errors cannot block it.
 	await refreshHealth()
 }
 

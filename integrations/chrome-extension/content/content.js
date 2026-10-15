@@ -1,6 +1,4 @@
 ;(() => {
-	console.info("[Goredacted] Content script loaded:", location.href)
-
 	if (!globalThis.GoredactedDomainRules) {
 		console.error("[Goredacted] Shared domain rules failed to load")
 		return
@@ -12,13 +10,6 @@
 
 	async function loadSettings() {
 		settings = await chrome.storage.local.get(DEFAULTS)
-
-		console.info("[Goredacted] Settings loaded:", settings)
-		console.info("[Goredacted] Hostname:", location.hostname)
-		console.info(
-			"[Goredacted] Domain enabled:",
-			isDomainEnabled(location.hostname, settings),
-		)
 	}
 
 	function isEnabledHere() {
@@ -28,7 +19,6 @@
 		}
 
 		const enabled = isDomainEnabled(location.hostname, settings)
-		console.info("[Goredacted] isEnabledHere:", enabled)
 		return enabled
 	}
 
@@ -154,8 +144,6 @@
 	let busy = false
 
 	async function handlePaste(event) {
-		console.info("[Goredacted] Paste event detected:", event.target)
-
 		if (busy) {
 			console.warn("[Goredacted] Paste skipped: already processing")
 			return
@@ -167,7 +155,6 @@
 		}
 
 		const target = getEditableTarget(event.target)
-		console.info("[Goredacted] Editable target:", target)
 
 		if (!target) {
 			console.warn("[Goredacted] Paste skipped: unsupported target")
@@ -195,14 +182,10 @@
 		target.setAttribute("data-goredacted-paste-pending", "true")
 
 		try {
-			console.info("[Goredacted] Sending text to background")
-
 			const result = await chrome.runtime.sendMessage({
 				type: "REDACT_PASTE",
 				text,
 			})
-
-			console.info("[Goredacted] Background response:", result)
 
 			if (!result?.ok) {
 				restoreAndInsert(target, saved, text)
@@ -219,7 +202,6 @@
 			}
 
 			restoreAndInsert(target, saved, result.text)
-			console.info("[Goredacted] Redacted text inserted")
 		} catch (error) {
 			console.error("[Goredacted] Paste processing failed:", error)
 			restoreAndInsert(target, saved, text)
