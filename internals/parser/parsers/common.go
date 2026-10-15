@@ -21,15 +21,15 @@ func Match(input string, targets []string) string {
 }
 
 func Ingore(match string, parser parser.Parser) bool {
-	if len(config.CONFIG.EXCLUDE) <= 0 && len(config.CONFIG.INCLUDE) <= 0 {
+	if len(config.CONFIG.Exclude) <= 0 && len(config.CONFIG.Include) <= 0 {
 		return false
 	}
 
-	cleanFunc := func(xxcludes []config.XXCLUDE) []config.XXCLUDE {
+	cleanFunc := func(xxcludes []config.RegexParserEntry) []config.RegexParserEntry {
 		i := 0
 
 		for _, xxclude := range xxcludes {
-			if xxclude.PARSER == parser.Name {
+			if xxclude.Parser == parser.Name {
 				xxcludes[i] = xxclude
 				i++
 			}
@@ -37,11 +37,11 @@ func Ingore(match string, parser parser.Parser) bool {
 		return xxcludes[:i]
 	}
 
-	included := cleanFunc(config.CONFIG.INCLUDE)
-	excluded := cleanFunc(config.CONFIG.EXCLUDE)
+	included := cleanFunc(config.CONFIG.Include)
+	excluded := cleanFunc(config.CONFIG.Exclude)
 
-	containsFunc := func(try config.XXCLUDE) bool {
-		re, err := regexp.Compile(try.REGEX)
+	containsFunc := func(try config.RegexParserEntry) bool {
+		re, err := regexp.Compile(try.Regex)
 
 		if err != nil {
 			return false
@@ -50,8 +50,8 @@ func Ingore(match string, parser parser.Parser) bool {
 		return re.MatchString(match)
 	}
 
-	isIncluded := slices.ContainsFunc(config.CONFIG.INCLUDE, containsFunc)
-	isExcluded := slices.ContainsFunc(config.CONFIG.EXCLUDE, containsFunc)
+	isIncluded := slices.ContainsFunc(config.CONFIG.Include, containsFunc)
+	isExcluded := slices.ContainsFunc(config.CONFIG.Exclude, containsFunc)
 
 	if isIncluded {
 		return false

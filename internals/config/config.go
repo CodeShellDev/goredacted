@@ -7,13 +7,13 @@ import (
 )
 
 type Config struct {
-	INCLUDE []XXCLUDE `json:"include"`
-	EXCLUDE []XXCLUDE `json:"exclude"`
+	Include []RegexParserEntry `json:"include"`
+	Exclude []RegexParserEntry `json:"exclude"`
 }
 
-type XXCLUDE struct {
-	REGEX	string	`json:"regex"`
-	PARSER	string	`json:"parser"`
+type RegexParserEntry struct {
+	Regex	string	`json:"regex"`
+	Parser	string	`json:"parser"`
 }
 
 var CONFIG = &Config{}
