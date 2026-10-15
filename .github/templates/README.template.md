@@ -124,8 +124,6 @@ Now you can **load a folder as an extension**.
 
 Load the newly downloaded `integration/chrome-extension` in your chromium based browser and go to the **extensions settings**.
 
-![Options](./imgs/integrations/chrome-extension/options.png)
-
 Here you can **add disabled and enabled domains** and also the **http endpoint** that the extension should request.
 Once done any domain that ends with a disabled or enabled will be treated respectively.
 

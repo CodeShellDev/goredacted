@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/json"
 	"errors"
 	"io"
 	"log"
@@ -117,24 +116,55 @@ func Redact() error {
 }
 
 func Listen(addr string) {
-	http.HandleFunc("/parse", func(w http.ResponseWriter, req *http.Request) {
-    	log.Print(req.Method, " ", req.URL.Path, req.URL.RawQuery, " from ", req.RemoteAddr, "\n")
+	mux := http.NewServeMux()
 
-        if req.Method != http.MethodGet {
-            http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-            return
-        }
-
-		redacted := Parse(clipboardutils.Read())
-
-		response := map[string]any{
-			"output": redacted,
+	mux.HandleFunc("/health", func(w http.ResponseWriter, req *http.Request) {
+		if req.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(response)
-    })
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		_, _ = io.WriteString(w, "ok\n")
+	})
 
-    log.Print("Server listening on http://", addr, "\n")
-    log.Fatal(http.ListenAndServe(addr, nil))
+	mux.HandleFunc("/parse", func(w http.ResponseWriter, req *http.Request) {
+    	log.Print(req.Method, " ", req.URL.Path, req.URL.RawQuery, " from ", req.RemoteAddr, "\n")
+
+		if req.Method != http.MethodPost {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		body, err := io.ReadAll(http.MaxBytesReader(w, req.Body, 10<<20))
+		if err != nil {
+			http.Error(w, "Invalid or oversized request body", http.StatusBadRequest)
+			return
+		}
+
+		input := string(body)
+		redacted := Parse(input)
+
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		_, _ = io.WriteString(w, redacted)
+	})
+
+	server := &http.Server{
+		Addr:              addr,
+		Handler:           mux,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       60 * time.Second,
+	}
+
+	log.Print("Server listening on http://", addr)
+	log.Print("Health checkpoint: http://", addr, "/health")
+
+	err := server.ListenAndServe();
+	if err != nil && err != http.ErrServerClosed {
+		log.Fatal("Server failed: ", err)
+	}
 }

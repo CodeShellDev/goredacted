@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Goredacted Settings</title>
+		<link rel="stylesheet" href="options.css" />
+	</head>
+	<body>
+		<main>
+			<h1>Goredacted</h1>
+			<p class="intro">
+				Pasted plaintext is sent to your configured Goredacted endpoint and the
+				response replaces the original paste.
+			</p>
+
+			<section class="card">
+				<label for="endpoint">Goredacted endpoint</label>
+				<input
+					id="endpoint"
+					type="url"
+					spellcheck="false"
+					placeholder="http://127.0.0.1:5678/parse"
+				/>
+				<p class="hint">
+					The endpoint receives <code>text/plain</code> in the HTTP request
+					body.
+				</p>
+			</section>
+
+			<section class="card">
+				<label for="enabled">Enabled domains</label>
+				<textarea
+					id="enabled"
+					rows="7"
+					placeholder="example.com&#10;*.example.org&#10;*.com"
+				></textarea>
+				<p class="hint">
+					One pattern per line. <code>example.com</code> matches that hostname.
+					<code>*.example.com</code> matches the domain and its subdomains.
+				</p>
+			</section>
+
+			<section class="card">
+				<label for="disabled">Disabled domains</label>
+				<textarea
+					id="disabled"
+					rows="7"
+					placeholder="private.example.com&#10;*.sensitive.example.org"
+				></textarea>
+				<p class="hint">Disabled rules always win over enabled rules.</p>
+			</section>
+
+			<div class="actions">
+				<button id="save" class="primary">Save settings</button>
+				<span id="status" role="status"></span>
+			</div>
+		</main>
+
+		<script src="options.js"></script>
+	</body>
+</html>

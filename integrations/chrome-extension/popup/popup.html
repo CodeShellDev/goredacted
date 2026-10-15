@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Goredacted</title>
+
+		<style>
+			:root {
+				color-scheme: light dark;
+				--bg: #ffffff;
+				--surface: #f1f3f4;
+				--text: #17202a;
+				--muted: #5f6368;
+				--border: #e0e3e7;
+				--button: #1a73e8;
+				--button-hover: #1558b0;
+				--hover: #e8eaed;
+				--success: #188038;
+				--danger: #d93025;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg: #17191c;
+					--surface: #24272b;
+					--text: #e8eaed;
+					--muted: #aeb4bc;
+					--border: #383c42;
+					--button: #8ab4f8;
+					--button-hover: #aecbfa;
+					--hover: #34383e;
+					--success: #81c995;
+					--danger: #f28b82;
+				}
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			html {
+				background: var(--bg);
+				border-radius: 18px;
+				overflow: hidden;
+			}
+
+			body {
+				width: 300px;
+				margin: 0;
+				padding: 16px;
+				font:
+					14px/1.45 system-ui,
+					sans-serif;
+				color: var(--text);
+				background: var(--bg);
+				border-radius: 18px;
+				overflow: hidden;
+			}
+
+			h1 {
+				font-size: 18px;
+				margin: 0 0 12px;
+				color: var(--text);
+			}
+
+			.status {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				padding: 10px;
+				border: 1px solid var(--border);
+				border-radius: 12px;
+				background: var(--surface);
+				color: var(--text);
+				margin-bottom: 10px;
+				min-height: 42px;
+			}
+
+			.status-label {
+				flex: 1;
+				min-width: 0;
+			}
+
+			.dot {
+				display: inline-block;
+				flex: 0 0 8px;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background: var(--muted);
+			}
+
+			.dot.on {
+				background: var(--success);
+			}
+
+			.dot.off {
+				background: var(--danger);
+			}
+
+			.endpoint {
+				font-family: ui-monospace, monospace;
+				font-size: 11px;
+				word-break: break-all;
+				color: var(--muted);
+				margin: 5px 0 16px;
+			}
+
+			button {
+				border: 0;
+				border-radius: 10px;
+				cursor: pointer;
+			}
+
+			#settings {
+				width: 100%;
+				padding: 10px;
+				font: inherit;
+				font-weight: 600;
+				color: #fff;
+				background: var(--button);
+			}
+
+			#settings:hover {
+				background: var(--button-hover);
+			}
+
+			#check-health {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				flex: 0 0 28px;
+				width: 28px;
+				height: 28px;
+				padding: 0;
+				background: transparent;
+				color: var(--muted);
+				font-size: 20px;
+				line-height: 1;
+			}
+
+			#check-health:hover {
+				background: var(--hover);
+				color: var(--text);
+			}
+
+			#check-health:disabled {
+				cursor: wait;
+				opacity: 0.55;
+			}
+
+			button:focus-visible {
+				outline: 2px solid var(--button);
+				outline-offset: 2px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>Goredacted</h1>
+
+		<div class="status" id="status">
+			<span class="dot"></span>
+			<span class="status-label">Checking page…</span>
+		</div>
+
+		<div class="status" id="health">
+			<span class="dot" id="health-dot"></span>
+			<span class="status-label" id="health-label" role="status">
+				Checking local service…
+			</span>
+			<button
+				id="check-health"
+				type="button"
+				title="Check service health"
+				aria-label="Check service health"
+			>
+				↻
+			</button>
+		</div>
+
+		<div class="endpoint" id="endpoint"></div>
+
+		<button id="settings" type="button">Open settings</button>
+
+		<script src="../shared/domainRules.js"></script>
+		<script src="popup.js"></script>
+	</body>
+</html>
