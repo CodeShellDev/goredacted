@@ -129,4 +129,4 @@ Once done any domain that ends with a disabled or enabled will be treated respec
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+This Project is licensed under the [MIT License](./LICENSE).
