@@ -43,13 +43,17 @@ func parse_run(cmd *cobra.Command, args []string) {
 			return
 		}
 
-		seed.LoadFile(env.ENV.SEED_PATH)
+		err := seed.LoadFile(env.ENV.SEED_PATH)
+		if err != nil {
+			cmd.PrintErrln("seed file error:", err.Error())
+			return
+		}
 	}
 
 	err := config.Load(env.ENV.CONFIG_PATH)
-
 	if err != nil {
-		cmd.PrintErrln(err)
+		cmd.PrintErrln("config error:", err.Error())
+		return
 	}
 
 	err = service.Redact()

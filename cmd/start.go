@@ -47,10 +47,19 @@ func start_run(cmd *cobra.Command, args []string) {
 			return
 		}
 
-		seed.LoadFile(env.ENV.SEED_PATH)
+		err := seed.LoadFile(env.ENV.SEED_PATH)
+		if err != nil {
+			cmd.PrintErrln("seed file error:", err.Error())
+			return
+		}
 	}
 	
-	config.Load(env.ENV.CONFIG_PATH)
+	err := config.Load(env.ENV.CONFIG_PATH)
+
+	if err != nil {
+		cmd.PrintErrln("config error:", err)
+		return
+	}
 
 	if os.Getenv("DAEMON_MODE") == "1" || !env.ENV.BACKGROUND {
 		if env.ENV.LISTEN_ADDR != "" {
