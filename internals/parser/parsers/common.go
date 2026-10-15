@@ -2,72 +2,93 @@ package parsers
 
 import (
 	"crypto/sha256"
+	"encoding/binary"
 	"regexp"
-	"slices"
 
 	"github.com/codeshelldev/goredacted/internals/config"
 	"github.com/codeshelldev/goredacted/internals/parser"
 )
 
-func Match(input string, targets []string) string {
-	hash := sha256.Sum256([]byte(input))
-
-	index := int(hash[0]) << 24 | int(hash[1]) << 16 | int(hash[2]) << 8 | int(hash[3])
-	if index < 0 {
-		index = -index
+func SelectReplacement(input string, targets []string) string {
+	if len(targets) == 0 {
+		return ""
 	}
 
-	return targets[index % len(targets)]
+	hash := sha256.Sum256([]byte(input))
+	index := binary.BigEndian.Uint64(hash[:8]) % uint64(len(targets))
+
+	return targets[index]
 }
 
-func Ingore(match string, parser parser.Parser) bool {
-	if len(config.CONFIG.Exclude) <= 0 && len(config.CONFIG.Include) <= 0 {
-		return false
+type MatchDecision struct {
+	Process bool
+	Matched string
+}
+
+func ParserRules(name string, entries []config.RegexParserEntry) []config.RegexParserEntry {
+	var rules []config.RegexParserEntry
+
+	for _, entry := range entries {
+		if entry.Parser == name {
+			rules = append(rules, entry)
+		}
 	}
 
-	cleanFunc := func(xxcludes []config.RegexParserEntry) []config.RegexParserEntry {
-		i := 0
+	return rules
+}
 
-		for _, xxclude := range xxcludes {
-			if xxclude.Parser == parser.Name {
-				xxcludes[i] = xxclude
-				i++
+func ShouldProcess(match string, p parser.Parser) MatchDecision {
+	included := ParserRules(p.Name, config.CONFIG.Include)
+	excluded := ParserRules(p.Name, config.CONFIG.Exclude)
+
+	if len(included) == 0 && len(excluded) == 0 {
+		return MatchDecision{ Process: true }
+	}
+
+	matchesAny := func(rules []config.RegexParserEntry) string {
+		for _, rule := range rules {
+			re, err := regexp.Compile(rule.Regex)
+			if err != nil {
+				continue
+			}
+
+			matched := re.FindString(match)
+			if matched != "" {
+				return matched
 			}
 		}
-		return xxcludes[:i]
+
+		return ""
 	}
 
-	included := cleanFunc(config.CONFIG.Include)
-	excluded := cleanFunc(config.CONFIG.Exclude)
+	matched := matchesAny(excluded)
+	if matched != "" {
+		return MatchDecision{ Process: false, Matched: matched }
+	}
 
-	containsFunc := func(try config.RegexParserEntry) bool {
-		re, err := regexp.Compile(try.Regex)
+	if len(included) > 0 {
+		matched := matchesAny(included)
+		return MatchDecision{
+			Process: matched != "",
+			Matched: matched,
+		}
+	}
 
+	return MatchDecision{ Process: true }
+}
+
+func CustomParserPatterns(name string) []string {
+	rules := ParserRules(name, config.CONFIG.Include)
+
+	patterns := make([]string, 0, len(rules))
+	for _, rule := range rules {
+		_, err := regexp.Compile(rule.Regex)
 		if err != nil {
-			return false
+			continue
 		}
 
-		return re.MatchString(match)
+		patterns = append(patterns, rule.Regex)
 	}
 
-	isIncluded := slices.ContainsFunc(config.CONFIG.Include, containsFunc)
-	isExcluded := slices.ContainsFunc(config.CONFIG.Exclude, containsFunc)
-
-	if isIncluded {
-		return false
-	}
-	
-	if isExcluded {
-		return true
-	}
-
-	if len(included) > 0 && len(excluded) == 0 {
-		return true
-	}
-
-	if len(excluded) > 0 && len(included) == 0 {
-		return false
-	}
-
-	return true
+	return patterns
 }

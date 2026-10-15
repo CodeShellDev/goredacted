@@ -16,12 +16,13 @@ var emailParser = parser.Parser{
 			return content
 		}
 
-		return re.ReplaceAllStringFunc(content, func(match string) string {
-			if Ingore(match, this) {
-				return match
+		return re.ReplaceAllStringFunc(content, func(candidate string) string {
+			decision := ShouldProcess(candidate, this)
+			if !decision.Process {
+				return candidate
 			}
 
-			submatches := re.FindStringSubmatch(match)
+			submatches := re.FindStringSubmatch(candidate)
 
 			local := submatches[1]
 			domain := submatches[2]
@@ -40,9 +41,9 @@ var emailParser = parser.Parser{
 				useFirstName := (i % 2 == 0)
 
 				if useFirstName {
-					mask = Match(local, FIRST_NAMES)
+					mask = SelectReplacement(local, FIRST_NAMES)
 				} else {
-					mask = Match(local, LAST_NAMES)
+					mask = SelectReplacement(local, LAST_NAMES)
 				}
 
 				localMasks = append(localMasks, mask)

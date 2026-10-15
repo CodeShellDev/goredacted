@@ -1,5 +1,35 @@
 package parsers
 
+import (
+	"regexp"
+
+	"github.com/codeshelldev/goredacted/internals/parser"
+)
+
+var nameParser = parser.Parser{
+	Name: "name",
+	Parse: func(this parser.Parser, content string) string {
+		result := content
+
+		for _, pattern := range CustomParserPatterns(this.Name) {
+			re, err := regexp.Compile(pattern)
+			if err != nil {
+				continue
+			}
+
+			result = re.ReplaceAllStringFunc(result, func(match string) string {
+				return SelectReplacement(match, FIRST_NAMES)
+			})
+		}
+
+		return result
+	},
+}
+
+func init() {
+	parser.Register(nameParser)
+}
+
 var FIRST_NAMES = []string{
 	"alice","brian","charlotte","daniel","emily","georgia","henry","isabel",
 	"jackson","katherine","leonard","madeline","nathaniel","olivia","patrick",

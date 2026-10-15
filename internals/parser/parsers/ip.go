@@ -19,12 +19,13 @@ var ipParser = parser.Parser{
 			return content
 		}
 
-		return re.ReplaceAllStringFunc(content, func(match string) string {
-			if Ingore(match, this) {
-				return match
+		return re.ReplaceAllStringFunc(content, func(candidate string) string {
+			decision := ShouldProcess(candidate, this)
+			if !decision.Process {
+				return candidate
 			}
 
-			return AnonymizeIP(match)
+			return AnonymizeIP(candidate)
 		})
 	},
 }

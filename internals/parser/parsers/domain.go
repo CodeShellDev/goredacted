@@ -17,12 +17,14 @@ var domainParser = parser.Parser{
 			return content
 		}
 
-		return re.ReplaceAllStringFunc(content, func(match string) string {
-			if Ingore(match, this) {
-				return match
+		return re.ReplaceAllStringFunc(content, func(candidate string) string {
+			decision := ShouldProcess(candidate, this)
+			if !decision.Process {
+				return candidate
 			}
 
-			parts := strings.Split(match, ".")
+
+			parts := strings.Split(candidate, ".")
 			slices.Reverse(parts)
 
 			partMasks := []string{}
@@ -36,11 +38,11 @@ var domainParser = parser.Parser{
 				var mask string
 
 				if slices.Contains(DOMAIN_TLDS, part) {
-					mask = Match(part, DOMAIN_TLDS)
+					mask = SelectReplacement(part, DOMAIN_TLDS)
 				} else if i > 0 {
-					mask = Match(part, DOMAIN_NAMES)
+					mask = SelectReplacement(part, DOMAIN_NAMES)
 				} else {
-					return match
+					return candidate
 				}
 
 				partMasks = append(partMasks, mask)
