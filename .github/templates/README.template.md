@@ -11,7 +11,7 @@ Go CLI programm to redact and anonymize sensitive information.
 2. Make it executable with `chmod +x goredacted`
 3. Move to $PATH: `mv goredacted /usr/local/bin/goredacted`
 
-Once done initiliaze `goredacted` with (use `-s` for custom seed path)
+Once done initiliaze `goredacted` with (use `-f` for custom seed path)
 
 ```bash
 goredacted init
@@ -66,23 +66,25 @@ goredacted start -l 127.0.0.1:5678
 | :--- | :----------------------------------------- | :------------------------------------------------------------------------------------- |
 | `-d` | `goredacted start -d`                      | Run in background, <br> use `stop` to terminate <br> (only available for `start`)      |
 | `-l` | `goredacted start -l 127.0.0.1:5678`       | Specify listen address for http server <br> (only available for `start`)               |
-| `-s` | `goredacted parse -s /path/to/seed.file`   | Seed file path <br> (default: `~/.config/grdct/tcdrg.grdct`)                           |
-| `-c` | `goredacted parse -s /path/to/config.json` | Config json path <br> (default: `~/.config/grdct/config.json`, [Config](#config-file)) |
+| `-s` | `goredacted parse -s CUS70M_S33D`          | Seed <br> (optional, ignores seed file)                                                |
+| `-f` | `goredacted parse -f /path/to/seed.file`   | Seed file path <br> (default: `~/.config/grdct/tcdrg.grdct`)                           |
+| `-c` | `goredacted parse -c /path/to/config.json` | Config json path <br> (default: `~/.config/grdct/config.json`, [Config](#config-file)) |
 
 ### Parsers
 
 Available parsers are:
 
-| Parser ID | Note                                                              |
-| :-------- | :---------------------------------------------------------------- |
-| `domain`  | Parses domains with valid tlds whilst preserving domain structure |
-| `ip`      | Parses IPv4 and IPv6 addresses                                    |
-| `email`   | Parses the local email part (`local.part@domain.com`)             |
+| Parser ID | Note                                                                                         |
+| :-------- | :------------------------------------------------------------------------------------------- |
+| `domain`  | Parses domains with valid tlds whilst preserving domain structure                            |
+| `ip`      | Parses IPv4 and IPv6 addresses                                                               |
+| `email`   | Parses the local email part (`local.part@domain.com`)                                        |
+| `name`    | Parses preconfigured regex patterns and replaces them with first names (needs configuration) |
 
 ### Config File
 
 > [!NOTE]
-> Use `-s` flag to modify default config path
+> Use `-c` flag to modify default config path
 
 **Example:**
 
@@ -96,6 +98,10 @@ Available parsers are:
 		{
 			"parser": "domain",
 			"regex": "\\b(?:[a-zA-Z0-9-]{1,63}\\.)*example\\.org\\b"
+		},
+		{
+			"parser": "name",
+			"regex": "John"
 		}
 	],
 	"exclude": [
@@ -109,6 +115,7 @@ Available parsers are:
 
 This example modifies the `domain` parser to only parse `*.domain.com` and `*.example.org`.
 Aswell as excluding any `X.X.X.X` ip from the masking process (example: `1.1.1.1` will not be parsed).
+Additionally the `name` parser is configured to mask `John`.
 
 ## Integrations
 
